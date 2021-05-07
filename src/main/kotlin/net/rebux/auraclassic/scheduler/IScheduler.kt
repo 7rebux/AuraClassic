@@ -5,14 +5,19 @@ import org.bukkit.Bukkit
 
 interface IScheduler: Runnable
 {
-    var delay: Long
+    companion object
+    {
+        var taskId: Int = 0
+    }
 
-    val taskId: Int
-        get() = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuraClassic.instance, this, delay, delay)
+    var delay: Long
 
     override fun run()
 
-    fun start() = taskId
+    fun start()
+    {
+        taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuraClassic.instance, this, delay, delay)
+    }
 
     fun stop() = Bukkit.getScheduler().cancelTask(taskId)
 }
