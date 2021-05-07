@@ -1,6 +1,9 @@
 # Aura Classic Plugin
 A minecraft plugin of the famous game mode **Aura Classic** made in pure [Kotlin](https://kotlinlang.org/) with the [Bukkit API](https://getbukkit.org/)
 
+### Currently Supported Minecraft Versions
+- Minecraft 1.8.8
+
 ### Features
 - Fully customizable messages, countdowns and much more through a config file
 - Statistics system with [MySQL](https://www.mysql.com/) (UUID based)
@@ -13,21 +16,21 @@ Just drag the plugin jar file into your **plugins** folder, and you're ready to 
 ### Permissions
 Name | Description
 --- | ---
-`aura.start`| Allows the permission holder to issue the start command
+`aura.start`| Allows the permission holder to utilize the start command
 `aura.kick` | Allows the permission holder to kick a player out of the lobby phase and join himself
-`aura.setspawn` | Allows the permission holder to set the spawn location on the lobby and the game map
+`aura.setspawn` | Allows the permission holder to utilize the setspawn command
 
 ### Commands
 Name | Description
 --- | ---
 `/start`| Skips the pre game countdown
-`/setspawn <lobby/map>` | Sets the spawn location for all players 
+`/setspawn <lobby/map>` | Sets the spawn location for all players on the map or on the lobby
 `/stats <name>` | Shows the players statistics of the last month
 `/statsd <days> <name>` | Shows the players statistics of the last `days` days
 `/statsall <name>` | Shows the players statistics of all time
 
 ### Config
-> !!! Since it is the **Classic** variant of Aura, you are not able to change the items and other base game mechanics !!!
+> !!! Since it is the **Classic** variant of Aura, you are not able to change the items and other base game elements !!!
 #### main.yml
 Entry | Data Type | Description
 --- | --- | ---
