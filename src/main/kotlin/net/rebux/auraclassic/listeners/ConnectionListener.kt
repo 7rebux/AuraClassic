@@ -1,5 +1,6 @@
 package net.rebux.auraclassic.listeners
 
+import net.rebux.auraclassic.utils.ConfigUtil
 import net.rebux.auraclassic.AuraClassic as ac
 import net.rebux.auraclassic.utils.GameState
 import org.bukkit.Bukkit
@@ -14,7 +15,7 @@ class ConnectionListener: Listener
     fun onConnect(event: PlayerJoinEvent)
     {
         if (ac.instance.gameState == GameState.PRE_GAME)
-            event.joinMessage = getEntry("join").replace("{player}", event.player.name)
+            event.joinMessage = ConfigUtil.getMessage("join").replace("{player}", event.player.name)
         else
             ac.instance.spectators.add(event.player)
     }
@@ -23,14 +24,14 @@ class ConnectionListener: Listener
     fun onDisconnect(event: PlayerQuitEvent)
     {
         if (arrayListOf(GameState.PRE_GAME, GameState.POST_GAME).contains(ac.instance.gameState))
-            event.quitMessage = getEntry("quit").replace("{player}", event.player.name)
+            event.quitMessage = ConfigUtil.getMessage("quit").replace("{player}", event.player.name)
         else if (ac.instance.gameState == GameState.INGAME && ac.instance.players.contains(event.player))
         {
             // remove from players
             ac.instance.players.remove(event.player)
 
-            event.quitMessage = getEntry("death").replace("{player}", event.player.name) // TODO kill falls gehittet worden
-            Bukkit.broadcastMessage(getEntry("remaining").replace("{count}", ac.instance.players.size.toString())) // this is not a thing on gommehd.net
+            event.quitMessage = ConfigUtil.getMessage("death").replace("{player}", event.player.name) // TODO kill falls gehittet worden
+            Bukkit.broadcastMessage(ConfigUtil.getMessage("remaining").replace("{count}", ac.instance.players.size.toString())) // this is not a thing on gommehd.net
         }
         else
         {
@@ -40,6 +41,4 @@ class ConnectionListener: Listener
             event.quitMessage = ""
         }
     }
-
-    private fun getEntry(name: String) = ac.instance.messagesConfig.getString(name)
 }
