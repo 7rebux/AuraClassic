@@ -1,18 +1,18 @@
-join: §7>> §8{player} §7hat das Spiel betreten
-quit: §7<< §8{player} §7hat das Spiel verlassen
+join: "&7>> &8{player} &7hat das Spiel betreten"
+quit: "&7<< &8{player} &7hat das Spiel verlassen"
 
-pre_game_timer: §f[§aAuraClassic§f] §7Die Runde beginnt in §e{time} §7Sekunden
-ingame_end_timer: §f[§aAuraClassic§f] §7Die Runde endet in §e{time} §7Sekunden
-protection_timer: §f[§aAuraClassic§f] §7Die Schutzzeit endet in §e{time} §7Sekunden
-post_game_timer: §f[§aAuraClassic§f] §cDer Server startet in §e{time} §cSekunden neu
+pre_game_timer: "&f[&aAuraClassic&f] &7Die Runde beginnt in &e{time} &7Sekunden"
+ingame_end_timer: "&f[&aAuraClassic&f] &7Die Runde endet in &e{time} &7Sekunden"
+protection_timer: "&f[&aAuraClassic&f] &7Die Schutzzeit endet in &e{time} &7Sekunden"
+post_game_timer: "&f[&aAuraClassic&f] &cDer Server startet in &e{time} &cSekunden neu"
 
-waiting: §f[§aAuraClassic§f] §cWarten auf weitere Spieler
-protection_start: §f[§aAuraClassic§f] §eDie Schutzzeit beginnt!
-protection_end: §f[§aAuraClassic§f] §eDie Schutzzeit ist vorrüber! Lasst die Kämpfe beginnen!
-tracker_info: §f[§aAuraClassic§f] Alle Spieler haben einen Tracker erhalten, welcher auf den nächsten Spieler zeigt
-ingame_end_info: §f[§aAuraClassic§f] §eDie Runde endet in Kürze! Der Spieler, welcher sich am nächsten bei der Mitte befindet, gewinnt die Runde
+waiting: "&f[&aAuraClassic&f] &cWarten auf weitere Spieler"
+protection_start: "&f[&aAuraClassic&f] &eDie Schutzzeit beginnt!"
+protection_end: "&f[&aAuraClassic&f] &eDie Schutzzeit ist vorrüber! Lasst die Kämpfe beginnen!"
+tracker_info: "&f[&aAuraClassic&f] Alle Spieler haben einen Tracker erhalten, welcher auf den nächsten Spieler zeigt"
+ingame_end_info: "&f[&aAuraClassic&f] &eDie Runde endet in Kürze! Der Spieler, welcher sich am nächsten bei der Mitte befindet, gewinnt die Runde"
 
-death: §f[§aAuraClassic§f] §8{player} §7ist gestorben!
-kill: §f[§aAuraClassic§f] §8{player} §7wurde von §8{killer} getötet!
-remaining: §f[§aAuraClassic§f] §e{count} §7verbleibende Spieler
-win: §f[§aAuraClassic§f] §8{player} §ehat §aAuraPvP §egewonnen!
+death: "&f[&aAuraClassic&f] &8{player} &7ist gestorben!"
+kill: "&f[&aAuraClassic&f] &8{player} &7wurde von &8{killer} getötet!"
+remaining: "&f[&aAuraClassic&f] &e{count} &7verbleibende Spieler"
+win: "&f[&aAuraClassic&f] &8{player} &ehat &aAuraPvP &egewonnen!"
