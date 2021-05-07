@@ -1,0 +1,4 @@
+name: AuraClassic
+version: 1.0.0
+description: A simple Aura Classic plugin
+main: net.rebux.auraclassic.AuraClassic
