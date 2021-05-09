@@ -27,6 +27,12 @@ class ItemBuilder
         return this
     }
 
+    fun setDurability(durability: Short): ItemBuilder
+    {
+        itemStack.durability = durability
+        return this
+    }
+
     fun addEnchantment(enchantment: Enchantment, level: Int): ItemBuilder
     {
         itemStack.addUnsafeEnchantment(enchantment, level)
