@@ -1,10 +1,12 @@
 min_players: 6
 max_players: 12
 
-# time in seconds
 waiting_countdown: 20
 pre_game_countdown: 60
 protection_countdown: 20
 ingame_countdown: 1800
 tracker_countdown: 1200
 post_game_countdown: 20
+
+inventory_sorting_name: "&cInventarsortierung &7(Rechtsklick)"
+tracker_name: "&6Tracker"

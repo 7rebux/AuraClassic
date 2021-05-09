@@ -1,6 +1,9 @@
 join: "&7>> &8{player} &7hat das Spiel betreten"
 quit: "&7<< &8{player} &7hat das Spiel verlassen"
 
+chat: "&8{player}&7: &f{message}"
+chat_spectator: "&7{player}: &f{message}" # TODO idk if this is right
+
 pre_game_timer: "&f[&aAuraClassic&f] &7Die Runde beginnt in &e{time} &7Sekunden"
 ingame_end_timer: "&f[&aAuraClassic&f] &7Die Runde endet in &e{time} &7Sekunden"
 protection_timer: "&f[&aAuraClassic&f] &7Die Schutzzeit endet in &e{time} &7Sekunden"
