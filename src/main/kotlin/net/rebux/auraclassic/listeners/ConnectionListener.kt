@@ -3,6 +3,8 @@ package net.rebux.auraclassic.listeners
 import net.rebux.auraclassic.utils.ConfigUtil
 import net.rebux.auraclassic.AuraClassic as ac
 import net.rebux.auraclassic.utils.GameState
+import net.rebux.auraclassic.utils.GameUtil
+import net.rebux.auraclassic.utils.ItemUtil
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -15,9 +17,15 @@ class ConnectionListener: Listener
     fun onConnect(event: PlayerJoinEvent)
     {
         if (ac.instance.gameState == GameState.PRE_GAME)
+        {
             event.joinMessage = ConfigUtil.getMessage("join").replace("{player}", event.player.name)
+            event.player.inventory.setItem(8, ItemUtil.getInventorySortingItem())
+        }
         else
-            ac.instance.spectators.add(event.player)
+        {
+            GameUtil.addSpectator(event.player)
+            event.joinMessage = ""
+        }
     }
 
     @EventHandler
@@ -35,9 +43,7 @@ class ConnectionListener: Listener
         }
         else
         {
-            // remove from spectators
-            ac.instance.spectators.remove(event.player)
-
+            GameUtil.removeSpectator(event.player)
             event.quitMessage = ""
         }
     }
