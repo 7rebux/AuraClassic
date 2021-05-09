@@ -1,8 +1,8 @@
 package net.rebux.auraclassic.scheduler
 
+import net.rebux.auraclassic.AuraClassic
 import net.rebux.auraclassic.utils.ConfigUtil
 import org.bukkit.Bukkit
-import net.rebux.auraclassic.AuraClassic as ac
 
 class WaitingScheduler(override var delay: Long = 20L) : IScheduler
 {
@@ -10,14 +10,14 @@ class WaitingScheduler(override var delay: Long = 20L) : IScheduler
 
     override fun run()
     {
-        if (Bukkit.getOnlinePlayers().size == ac.instance.mainConfig.getInt("min_players"))
+        if (Bukkit.getOnlinePlayers().size == ConfigUtil.getInt("min_players"))
         {
             stop()
-            PreGameScheduler().start()
+            AuraClassic.instance.preGameScheduler.start()
             return
         }
 
-        if (countdown % ac.instance.mainConfig.getInt("waiting_countdown") == 0)
+        if (countdown % ConfigUtil.getInt("waiting_delay") == 0)
             Bukkit.broadcastMessage(ConfigUtil.getMessage("waiting"))
 
         ++countdown

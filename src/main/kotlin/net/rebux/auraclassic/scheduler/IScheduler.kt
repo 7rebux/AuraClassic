@@ -7,7 +7,7 @@ interface IScheduler: Runnable
 {
     companion object
     {
-        var taskId: Int = 0
+        var taskId = -1 // TODO thats really fkn bad fix fast :)
     }
 
     var delay: Long
@@ -19,5 +19,8 @@ interface IScheduler: Runnable
         taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AuraClassic.instance, this, delay, delay)
     }
 
-    fun stop() = Bukkit.getScheduler().cancelTask(taskId)
+    fun stop()
+    {
+        Bukkit.getScheduler().cancelTask(taskId)
+    }
 }

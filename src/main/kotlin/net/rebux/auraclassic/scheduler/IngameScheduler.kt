@@ -1,28 +1,30 @@
 package net.rebux.auraclassic.scheduler
 
+import net.rebux.auraclassic.AuraClassic
 import net.rebux.auraclassic.utils.ConfigUtil
 import net.rebux.auraclassic.utils.GameState
-import net.rebux.auraclassic.AuraClassic as ac
+import net.rebux.auraclassic.utils.ItemUtil
 import org.bukkit.Bukkit
+import java.util.function.Consumer
 
 class IngameScheduler(override var delay: Long = 20L) : IScheduler
 {
-    private var countdown: Int = ac.instance.mainConfig.getInt("ingame_countdown")
+    private var countdown: Int = ConfigUtil.getInt("ingame_countdown")
 
     override fun run()
     {
         if (countdown == 0)
         {
             stop()
-            // TODO end game stuff
-            ac.instance.gameState = GameState.POST_GAME
-            PostGameScheduler().start()
+            // TODO end game stuff save stats and shit show kills
+            AuraClassic.instance.gameState = GameState.POST_GAME
+            AuraClassic.instance.postGameScheduler.start()
             return
         }
 
-        if (countdown == ac.instance.mainConfig.getInt("ingame_countdown") - ac.instance.mainConfig.getInt("tracker_countdown"))
+        if (countdown == ConfigUtil.getInt("ingame_countdown") - ConfigUtil.getInt("tracker_countdown"))
         {
-            // TODO give tracker
+            AuraClassic.instance.players.forEach(Consumer { it.inventory.addItem(ItemUtil.getTrackerItem()) })
             Bukkit.broadcastMessage(ConfigUtil.getMessage("tracker_info"))
         }
 

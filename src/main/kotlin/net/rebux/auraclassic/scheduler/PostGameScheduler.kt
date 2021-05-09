@@ -1,12 +1,11 @@
 package net.rebux.auraclassic.scheduler
 
 import net.rebux.auraclassic.utils.ConfigUtil
-import net.rebux.auraclassic.AuraClassic as ac
 import org.bukkit.Bukkit
 
 class PostGameScheduler(override var delay: Long = 20L) : IScheduler
 {
-    private var countdown: Int = ac.instance.mainConfig.getInt("post_game_countdown")
+    private var countdown: Int = ConfigUtil.getInt("post_game_countdown")
 
     override fun run()
     {

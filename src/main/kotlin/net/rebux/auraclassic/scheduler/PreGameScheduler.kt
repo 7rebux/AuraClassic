@@ -1,30 +1,29 @@
 package net.rebux.auraclassic.scheduler
 
+import net.rebux.auraclassic.AuraClassic
 import net.rebux.auraclassic.utils.ConfigUtil
 import net.rebux.auraclassic.utils.GameState
-import net.rebux.auraclassic.AuraClassic as ac
+import net.rebux.auraclassic.utils.ItemUtil
 import org.bukkit.Bukkit
+import java.util.function.Consumer
 
 class PreGameScheduler(override var delay: Long = 20L) : IScheduler
 {
-    private var countdown: Int = ac.instance.mainConfig.getInt("pre_game_countdown")
+    private var countdown: Int = ConfigUtil.getInt("pre_game_countdown")
 
     override fun run()
     {
-        if (Bukkit.getOnlinePlayers().size < ac.instance.mainConfig.getInt("min_players"))
+        if (Bukkit.getOnlinePlayers().size < ConfigUtil.getInt("min_players"))
         {
             stop()
-            WaitingScheduler()
+            AuraClassic.instance.waitingScheduler.start()
             return
         }
 
         if (countdown == 0)
         {
             stop()
-            // TODO start game stuff
-            ac.instance.gameState = GameState.INGAME
-            Bukkit.broadcastMessage(ConfigUtil.getMessage("protection_start"))
-            ProtectionScheduler().start()
+            AuraClassic.instance.startGame()
             return
         }
 
