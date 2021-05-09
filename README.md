@@ -36,12 +36,14 @@ Entry | Data Type | Description
 --- | --- | ---
 *min_players* | Int | Sets the **minimum** amount of players to start a game
 *max_players* | Int | Sets the **maximum** amount of players (not spectators)
-*waiting_countdown* | Int | Sets the **delay** between **waiting for players** messages
+*waiting_delay* | Int | Sets the **delay** between **waiting for players** messages
 *pre_game_countdown* | Int | Sets the countdown until the game starts
 *protection_countdown* | Int | Sets the countdown until the protection phase ends
 *ingame_countdown* | Int | Sets the countdown until the game ends
 *tracker_countdown* | Int | Sets the countdown until the players get the **tracker** item
 *post_game_countdown* | Int | Sets the countdown until the server restarts after the game
+*inventory_sorting_name* | String | Sets the display name for the inventory sorting item
+*tracker_name* | String | Sets the display name for the tracker item
 > Each countdown value is measured in seconds
 
 #### messages.yml
@@ -49,6 +51,8 @@ Entry | Data Type | Description | Variables
 --- | --- | --- | ---
 *join* | String | The message when a player joins the server | `{player}`
 *quit* | String | The message when a player quits the server | `{player}`
+*chat* | String | The message that is being displayed in the chat for everyone | `{player}`, `{message}`
+*chat_spectator* | String | The message that is only being displayed in the spectator chat | `{player}`, `{message}`
 *pre_game_timer* | String | The message when the pre game timer changes | `{time}`
 *ingame_end_timer* | String | The message when the ingame end timer changes | `{time}`
 *protection_timer* | String | The message when the protection phase timer changes | `{time}`
