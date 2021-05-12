@@ -4,10 +4,13 @@ import net.rebux.auraclassic.AuraClassic as ac
 import net.rebux.auraclassic.utils.ConfigUtil
 import net.rebux.auraclassic.utils.GameState
 import org.bukkit.Bukkit
+import org.bukkit.entity.EntityType
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
+import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.FoodLevelChangeEvent
 import org.bukkit.event.entity.PlayerDeathEvent
@@ -19,8 +22,19 @@ import org.bukkit.event.player.PlayerPickupItemEvent
 class MainListener: Listener
 {
     @EventHandler
+    fun onHit(event: EntityDamageByEntityEvent)
+    {
+        if (event.damager.type != EntityType.PLAYER)
+            return
+
+        ac.instance.lastHitBy[event.entity as Player] = event.damager as Player
+    }
+
+    @EventHandler
     fun onDeath(event: PlayerDeathEvent)
     {
+        event.deathMessage = ""
+
         if (ac.instance.gameState != GameState.INGAME)
             return
 
@@ -47,6 +61,9 @@ class MainListener: Listener
             else
                 Bukkit.broadcastMessage(ConfigUtil.getMessage("death").replace("{player}", event.entity.name))
         }
+
+        if (ac.instance.players.size > 1)
+            Bukkit.broadcastMessage(ConfigUtil.getMessage("remaining").replace("{count}", ac.instance.players.size.toString()))
 
         // check if the last player died
         if (ac.instance.players.size == 1)
