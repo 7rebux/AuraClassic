@@ -1,15 +1,16 @@
 package net.rebux.auraclassic.listeners
 
-import net.rebux.auraclassic.AuraClassic
+import net.rebux.auraclassic.AuraClassic as ac
 import net.rebux.auraclassic.utils.ConfigUtil
 import net.rebux.auraclassic.utils.GameState
-import org.bukkit.entity.Player
+import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.FoodLevelChangeEvent
+import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.AsyncPlayerChatEvent
 import org.bukkit.event.player.PlayerAchievementAwardedEvent
 import org.bukkit.event.player.PlayerDropItemEvent
@@ -18,11 +19,46 @@ import org.bukkit.event.player.PlayerPickupItemEvent
 class MainListener: Listener
 {
     @EventHandler
+    fun onDeath(event: PlayerDeathEvent)
+    {
+        if (ac.instance.gameState != GameState.INGAME)
+            return
+
+        ac.instance.players.remove(event.entity)
+
+        if (event.entity.killer != null)
+        {
+            Bukkit.broadcastMessage(ConfigUtil.getMessage("kill")
+                .replace("{player}", event.entity.name)
+                .replace("{killer}", event.entity.killer.name))
+
+            ac.instance.playerKills[event.entity.killer]!!.inc()
+        }
+        else
+        {
+            if (ac.instance.lastHitBy.containsKey(event.entity))
+            {
+                Bukkit.broadcastMessage(ConfigUtil.getMessage("kill")
+                    .replace("{player}", event.entity.name)
+                    .replace("{killer}", ac.instance.lastHitBy[event.entity]!!.name))
+
+                ac.instance.playerKills[ac.instance.lastHitBy[event.entity]!!]!!.inc()
+            }
+            else
+                Bukkit.broadcastMessage(ConfigUtil.getMessage("death").replace("{player}", event.entity.name))
+        }
+
+        // check if the last player died
+        if (ac.instance.players.size == 1)
+            ac.instance.endGame()
+    }
+
+    @EventHandler
     fun onChat(event: AsyncPlayerChatEvent)
     {
-        if (AuraClassic.instance.spectators.contains(event.player))
+        if (ac.instance.spectators.contains(event.player))
         {
-            AuraClassic.instance.spectators.forEach{
+            ac.instance.spectators.forEach{
                 it.sendMessage(ConfigUtil.getMessage("chat_spectator")
                     .replace("{player}", event.player.name)
                     .replace("{message}", event.message))
@@ -36,17 +72,17 @@ class MainListener: Listener
     @EventHandler
     fun onDamage(event: EntityDamageEvent)
     {
-        if (AuraClassic.instance.gameState != GameState.INGAME || AuraClassic.instance.protectionScheduler.running)
+        if (ac.instance.gameState != GameState.INGAME || ac.instance.protectionScheduler.running)
             event.isCancelled = true
     }
 
     @EventHandler
     fun onFoodChange(event: FoodLevelChangeEvent)
     {
-        if (AuraClassic.instance.gameState == GameState.INGAME)
+        if (ac.instance.gameState == GameState.INGAME)
             return
 
-        (event.entity as Player).foodLevel = 20 // TODO not working
+        event.isCancelled = true
     }
 
     @EventHandler
@@ -70,7 +106,7 @@ class MainListener: Listener
     @EventHandler
     fun onPickup(event: PlayerPickupItemEvent)
     {
-        if (AuraClassic.instance.spectators.contains(event.player))
+        if (ac.instance.spectators.contains(event.player))
             event.isCancelled = true
     }
 
