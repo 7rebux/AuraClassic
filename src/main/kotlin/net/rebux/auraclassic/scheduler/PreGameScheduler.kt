@@ -11,6 +11,12 @@ class PreGameScheduler(override var delay: Long = 20L) : IScheduler
 {
     private var countdown: Int = ConfigUtil.getInt("pre_game_countdown")
 
+    override fun start()
+    {
+        super.start()
+        countdown = ConfigUtil.getInt("pre_game_countdown")
+    }
+
     override fun run()
     {
         if (Bukkit.getOnlinePlayers().size < ConfigUtil.getInt("min_players"))
