@@ -10,4 +10,6 @@ object ConfigUtil
     fun getString(name: String): String = ChatColor.translateAlternateColorCodes('&', ac.instance.mainConfig.getString(name))
 
     fun getInt(name: String): Int = ac.instance.mainConfig.getInt(name)
+
+    fun getBoolean(name: String): Boolean = ac.instance.mainConfig.getBoolean(name)
 }
