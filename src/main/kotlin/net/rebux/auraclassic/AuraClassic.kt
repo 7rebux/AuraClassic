@@ -21,10 +21,10 @@ class AuraClassic: JavaPlugin()
     val mainConfig: YamlConfiguration = YamlConfiguration.loadConfiguration(mainFile)
     val messagesConfig: YamlConfiguration = YamlConfiguration.loadConfiguration(messagesFile)
 
-    private val lobbyWorld: World = Bukkit.createWorld(WorldCreator("world"))
-    private val auraWorld: World = Bukkit.createWorld(WorldCreator("aura_map"))
-    private val lobbyWorldSpawn: Location = Location(lobbyWorld, 0.0, 60.0, 0.0)
-    private val auraWorldSpawn: Location = Location(auraWorld, 0.0, 64.5, -7.0)
+//    private val lobbyWorld: World = Bukkit.createWorld(WorldCreator("world"))
+//    private val auraWorld: World = Bukkit.createWorld(WorldCreator("aura_map"))
+//    private val lobbyWorldSpawn: Location = Location(lobbyWorld, 0.0, 60.0, 0.0)
+//    private val auraWorldSpawn: Location = Location(auraWorld, 0.0, 64.5, -7.0)
 
     lateinit var waitingScheduler: WaitingScheduler
     lateinit var preGameScheduler: PreGameScheduler
@@ -70,7 +70,7 @@ class AuraClassic: JavaPlugin()
         players.forEach { it.inventory.clear() }
         players.forEach { player -> ItemUtil.getItems(player.uniqueId).forEach { player.inventory.addItem(it) } }
         players.forEach { it.inventory.armorContents = ItemUtil.getArmor() }
-        players.forEach { it.teleport(auraWorldSpawn) }
+        players.forEach { it.teleport(Location(Bukkit.createWorld(WorldCreator("aura_map")), 0.0, 64.5, -7.0)) }
         players.forEach { playerKills[it] = 0 }
         protectionScheduler.start()
         Bukkit.broadcastMessage(ConfigUtil.getMessage("protection_start"))
@@ -88,7 +88,7 @@ class AuraClassic: JavaPlugin()
         Bukkit.broadcastMessage(ConfigUtil.getMessage("win").replace("{player}", winner!!.name))
 
         spectators.addAll(players)
-        spectators.forEach { it.teleport(lobbyWorldSpawn) }
+        spectators.forEach { it.teleport(Location(Bukkit.createWorld(WorldCreator("world")), 0.0, 60.0, 0.0)) }
         // TODO save stats to sql database
         postGameScheduler.start()
 
