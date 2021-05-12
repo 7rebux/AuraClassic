@@ -24,14 +24,14 @@ Name | Description
 Name | Description
 --- | ---
 `/start`| Skips the pre game countdown
-`/setspawn <lobby/map>` | Sets the spawn location for all players on the map or on the lobby
+`/setspawn` | Sets the spawn location for all players in the lobby
 `/stats <name>` | Shows the players statistics of the last month
 `/statsd <days> <name>` | Shows the players statistics of the last `days` days
 `/statsall <name>` | Shows the players statistics of all time
 
 ### Config
 > !!! Since it is the **Classic** variant of Aura, you are not able to change the items and other base game elements !!!
-#### main.yml
+#### config.yml
 Entry | Data Type | Description
 --- | --- | ---
 *min_players* | Int | Sets the **minimum** amount of players to start a game
@@ -44,6 +44,9 @@ Entry | Data Type | Description
 *post_game_countdown* | Int | Sets the countdown until the server restarts after the game
 *inventory_sorting_name* | String | Sets the display name for the inventory sorting item
 *tracker_name* | String | Sets the display name for the tracker item
+*tablist_header* | String | Sets the header of the tablist
+*tablist_footer* | String | Sets the footer of the tablist
+*remaining_on_quit* | Boolean | Shows how many players are remaining after a player disconnected
 > Each countdown value is measured in seconds
 
 #### messages.yml
