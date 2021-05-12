@@ -1,15 +1,13 @@
 package net.rebux.auraclassic.listeners
 
-import net.rebux.auraclassic.utils.ConfigUtil
+import net.rebux.auraclassic.utils.*
 import net.rebux.auraclassic.AuraClassic as ac
-import net.rebux.auraclassic.utils.GameState
-import net.rebux.auraclassic.utils.GameUtil
-import net.rebux.auraclassic.utils.ItemUtil
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import kotlin.math.acos
 
 class ConnectionListener: Listener
 {
@@ -26,25 +24,42 @@ class ConnectionListener: Listener
             GameUtil.addSpectator(event.player)
             event.joinMessage = ""
         }
+
+        // set tablist
+        TablistUtil.setTablistName(event.player)
+        TablistUtil.setTablistHeaderFooter(event.player)
     }
 
     @EventHandler
     fun onDisconnect(event: PlayerQuitEvent)
     {
+        event.quitMessage = ""
+
         if (arrayListOf(GameState.PRE_GAME, GameState.POST_GAME).contains(ac.instance.gameState))
             event.quitMessage = ConfigUtil.getMessage("quit").replace("{player}", event.player.name)
         else if (ac.instance.gameState == GameState.INGAME && ac.instance.players.contains(event.player))
         {
-            // remove from players
             ac.instance.players.remove(event.player)
 
-            event.quitMessage = ConfigUtil.getMessage("death").replace("{player}", event.player.name) // TODO kill falls gehittet worden
-            Bukkit.broadcastMessage(ConfigUtil.getMessage("remaining").replace("{count}", ac.instance.players.size.toString())) // this is not a thing on gommehd.net
+            if (ac.instance.lastHitBy.containsKey(event.player))
+            {
+                Bukkit.broadcastMessage(ConfigUtil.getMessage("kill")
+                    .replace("{player}", event.player.name)
+                    .replace("{killer}", ac.instance.lastHitBy[event.player]!!.name))
+
+                ac.instance.playerKills[ac.instance.lastHitBy[event.player]!!]!!.inc()
+            }
+            else
+                Bukkit.broadcastMessage(ConfigUtil.getMessage("death").replace("{player}", event.player.name))
+
+            if (ConfigUtil.getBoolean("remaining_on_quit") && ac.instance.players.size > 1)
+                Bukkit.broadcastMessage(ConfigUtil.getMessage("remaining").replace("{count}", ac.instance.players.size.toString()))
+
+            // check if the last player left
+            if (ac.instance.players.size == 1)
+                ac.instance.endGame()
         }
         else
-        {
             GameUtil.removeSpectator(event.player)
-            event.quitMessage = ""
-        }
     }
 }
