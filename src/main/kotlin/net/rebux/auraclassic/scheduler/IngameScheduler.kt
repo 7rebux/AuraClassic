@@ -13,12 +13,9 @@ class IngameScheduler(override var delay: Long = 20L) : IScheduler
 
     override fun run()
     {
-        if (countdown == 0)
+        if (countdown == 0 || AuraClassic.instance.players.size == 1)
         {
-            stop()
-            // TODO end game stuff save stats and shit show kills
-            AuraClassic.instance.gameState = GameState.POST_GAME
-            AuraClassic.instance.postGameScheduler.start()
+            AuraClassic.instance.endGame()
             return
         }
 
