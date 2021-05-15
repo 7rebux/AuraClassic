@@ -68,6 +68,7 @@ class AuraClassic: JavaPlugin()
     {
         players.addAll(Bukkit.getOnlinePlayers())
         players.forEach { it.inventory.clear() }
+        players.forEach { it.level = 0; it.exp = 0F }
         players.forEach { player -> ItemUtil.getItems(player.uniqueId).forEach { player.inventory.addItem(it) } }
         players.forEach { it.inventory.armorContents = ItemUtil.getArmor() }
         players.forEach { it.teleport(Location(Bukkit.createWorld(WorldCreator("aura_map")), 0.0, 64.5, -7.0)) }

@@ -20,7 +20,7 @@ object ItemUtil
     {
         val items = arrayListOf<ItemStack>()
 
-        items.add(ItemBuilder(Material.STICK).addEnchantment(Enchantment.KNOCKBACK, 10).toItemStack())
+        items.add(ItemBuilder(Material.STICK).addEnchantment(Enchantment.KNOCKBACK, 4).toItemStack())
         items.add(ItemBuilder(Material.ENDER_PEARL, 32).toItemStack())
         items.add(ItemBuilder(Material.SNOW_BALL, 16).toItemStack())
         items.add(ItemBuilder(Material.PUMPKIN_PIE, 20).toItemStack())
@@ -37,7 +37,7 @@ object ItemUtil
     {
         val items = arrayOfNulls<ItemStack>(4)
 
-        items[0] = ItemBuilder(Material.IRON_BOOTS).addEnchantment(Enchantment.PROTECTION_FALL, 5).toItemStack()
+        items[0] = ItemBuilder(Material.IRON_BOOTS).addEnchantment(Enchantment.PROTECTION_FALL, 10).toItemStack()
         items[1] = ItemBuilder(Material.IRON_LEGGINGS).toItemStack()
         items[2] = ItemBuilder(Material.IRON_CHESTPLATE).toItemStack()
         items[3] = ItemBuilder(Material.IRON_HELMET).toItemStack()
