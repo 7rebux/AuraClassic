@@ -1,5 +1,6 @@
 package net.rebux.auraclassic.scheduler
 
+import net.rebux.auraclassic.AuraClassic
 import net.rebux.auraclassic.utils.ConfigUtil
 import org.bukkit.Bukkit
 
@@ -12,7 +13,7 @@ class PostGameScheduler(override var delay: Long = 20L) : IScheduler
         if (countdown == 0)
         {
             stop()
-            // TODO restart server save stats and shit
+            AuraClassic.instance.shutdown()
             return
         }
 
