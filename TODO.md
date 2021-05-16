@@ -14,6 +14,7 @@
     - [ ] Load from database
 - [ ] Misc
     - [ ] Tracker point to players
+    - [ ] Countdowns show ´1 second´ instead of ´1 seconds´
 - [ ] Bugfixes
     - [ ] Allow creepers to trample (mobGriefing = false ?)
     - [ ] Drop items in item frame after explosion
