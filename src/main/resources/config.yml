@@ -1,6 +1,13 @@
 min_players: 6
 max_players: 12
 
+# MySQL database settings
+hostname: "hostname"
+port: 0
+database: "database"
+username: "username"
+password: "password"
+
 waiting_delay: 20
 pre_game_countdown: 60
 protection_countdown: 30

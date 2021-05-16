@@ -2,9 +2,7 @@ package net.rebux.auraclassic
 
 import net.rebux.auraclassic.listeners.*
 import net.rebux.auraclassic.scheduler.*
-import net.rebux.auraclassic.utils.ConfigUtil
-import net.rebux.auraclassic.utils.GameState
-import net.rebux.auraclassic.utils.ItemUtil
+import net.rebux.auraclassic.utils.*
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.World
@@ -21,10 +19,12 @@ class AuraClassic: JavaPlugin()
     val mainConfig: YamlConfiguration = YamlConfiguration.loadConfiguration(mainFile)
     val messagesConfig: YamlConfiguration = YamlConfiguration.loadConfiguration(messagesFile)
 
-//    private val lobbyWorld: World = Bukkit.createWorld(WorldCreator("world"))
-//    private val auraWorld: World = Bukkit.createWorld(WorldCreator("aura_map"))
-//    private val lobbyWorldSpawn: Location = Location(lobbyWorld, 0.0, 60.0, 0.0)
-//    private val auraWorldSpawn: Location = Location(auraWorld, 0.0, 64.5, -7.0)
+    val sqlConnection = SQLConnection()
+
+    private lateinit var lobbyWorld: World
+    private lateinit var auraWorld: World
+    private lateinit var lobbyWorldSpawn: Location
+    private lateinit var auraWorldSpawn: Location
 
     lateinit var waitingScheduler: WaitingScheduler
     lateinit var preGameScheduler: PreGameScheduler
@@ -35,7 +35,6 @@ class AuraClassic: JavaPlugin()
     val players = arrayListOf<Player>()
     val spectators = arrayListOf<Player>()
     val lastHitBy = mutableMapOf<Player, Player>()
-    val playerKills = mutableMapOf<Player, Int>()
 
     lateinit var gameState: GameState
 
@@ -47,6 +46,21 @@ class AuraClassic: JavaPlugin()
     override fun onEnable()
     {
         instance = this
+
+        // connect to database
+        sqlConnection.connect(
+            ConfigUtil.getString("hostname"),
+            ConfigUtil.getInt("port").toString(),
+            ConfigUtil.getString("database"),
+            ConfigUtil.getString("username"),
+            ConfigUtil.getString("password"))
+        SQLUtil.createTables()
+
+        // initialize locations
+        lobbyWorld = Bukkit.createWorld(WorldCreator("world"))
+        auraWorld = Bukkit.createWorld(WorldCreator("aura_map"))
+        lobbyWorldSpawn = Location(lobbyWorld, 0.0, 60.0, 0.0)
+        auraWorldSpawn = Location(auraWorld, 0.0, 64.5, -7.0)
 
         // initialize schedulers
         waitingScheduler = WaitingScheduler()
@@ -60,7 +74,6 @@ class AuraClassic: JavaPlugin()
         Bukkit.getPluginManager().registerEvents(ConnectionListener(), this)
 
         gameState = GameState.PRE_GAME
-
         waitingScheduler.start()
     }
 
@@ -71,8 +84,7 @@ class AuraClassic: JavaPlugin()
         players.forEach { it.level = 0; it.exp = 0F }
         players.forEach { player -> ItemUtil.getItems(player.uniqueId).forEach { player.inventory.addItem(it) } }
         players.forEach { it.inventory.armorContents = ItemUtil.getArmor() }
-        players.forEach { it.teleport(Location(Bukkit.createWorld(WorldCreator("aura_map")), 0.0, 64.5, -7.0)) }
-        players.forEach { playerKills[it] = 0 }
+        players.forEach { it.teleport(auraWorldSpawn) }
         protectionScheduler.start()
         Bukkit.broadcastMessage(ConfigUtil.getMessage("protection_start"))
 
@@ -89,10 +101,15 @@ class AuraClassic: JavaPlugin()
         Bukkit.broadcastMessage(ConfigUtil.getMessage("win").replace("{player}", winner!!.name))
 
         spectators.addAll(players)
-        spectators.forEach { it.teleport(Location(Bukkit.createWorld(WorldCreator("world")), 0.0, 60.0, 0.0)) }
+        spectators.forEach { it.teleport(lobbyWorldSpawn) }
         // TODO save stats to sql database
         postGameScheduler.start()
 
         gameState = GameState.POST_GAME
+    }
+
+    fun shutdown()
+    {
+        // TODO restart server save stats and shit
     }
 }
