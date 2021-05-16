@@ -1,30 +1,33 @@
 package net.rebux.auraclassic.listeners
 
-import net.rebux.auraclassic.AuraClassic as ac
 import net.rebux.auraclassic.utils.ConfigUtil
 import net.rebux.auraclassic.utils.GameState
 import org.bukkit.Bukkit
-import org.bukkit.entity.EntityType
-import org.bukkit.entity.Player
+import org.bukkit.Material
+import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
-import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.entity.EntityDamageEvent
-import org.bukkit.event.entity.FoodLevelChangeEvent
-import org.bukkit.event.entity.PlayerDeathEvent
-import org.bukkit.event.player.AsyncPlayerChatEvent
-import org.bukkit.event.player.PlayerAchievementAwardedEvent
-import org.bukkit.event.player.PlayerDropItemEvent
-import org.bukkit.event.player.PlayerPickupItemEvent
+import org.bukkit.event.entity.*
+import org.bukkit.event.hanging.HangingBreakEvent
+import org.bukkit.event.player.*
+import org.bukkit.event.weather.WeatherChangeEvent
+import net.rebux.auraclassic.AuraClassic as ac
 
 class MainListener: Listener
 {
     @EventHandler
     fun onHit(event: EntityDamageByEntityEvent)
     {
-        if (event.damager.type != EntityType.PLAYER)
+        if (event.entity is ItemFrame)
+        {
+            event.isCancelled = true
+            return
+        }
+
+        if (event.damager.type != EntityType.PLAYER || event.entity !is Player)
             return
 
         ac.instance.lastHitBy[event.entity as Player] = event.damager as Player
@@ -79,11 +82,27 @@ class MainListener: Listener
                 it.sendMessage(ConfigUtil.getMessage("chat_spectator")
                     .replace("{player}", event.player.name)
                     .replace("{message}", event.message))
-            } // TODO there is also AsyncPlayerChatEvent#recipients
+            }
             event.isCancelled = true
         }
         else
             event.format = ConfigUtil.getMessage("chat").replace("{player}", "%1\$s").replace("{message}", "%2\$s")
+    }
+
+    @EventHandler
+    fun onHangingBreak(event: HangingBreakEvent)
+    {
+        //TODO still drop the item tho
+        if (event.cause == HangingBreakEvent.RemoveCause.ENTITY)
+            event.isCancelled = true
+    }
+
+    @EventHandler
+    fun onTrample(event: PlayerInteractEvent)
+    {
+        // TODO allow mobs to trample tho (maybe mobGriefing = false)
+        if (event.action == Action.PHYSICAL && event.clickedBlock.type == Material.SOIL)
+            event.isCancelled = true
     }
 
     @EventHandler
@@ -99,6 +118,12 @@ class MainListener: Listener
         if (ac.instance.gameState == GameState.INGAME)
             return
 
+        event.isCancelled = true
+    }
+
+    @EventHandler
+    fun onWeatherChange(event: WeatherChangeEvent)
+    {
         event.isCancelled = true
     }
 
