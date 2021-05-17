@@ -11,7 +11,9 @@ A minecraft plugin of the famous game mode **Aura Classic** made in pure [Kotlin
 - ... & basically every feature the game mode had on the [GommeHD.net](https://www.gommehd.net/) server
 
 ### Setup
-Just drag the plugin jar file into your **plugins** folder, and you're ready to play
+- Drag the plugin jar file into your **plugins** folder
+- Drag the **aura_world** folder into your server root folder
+- Enter your MySQL server connection credentials in the **config.yml** file
 
 ### Permissions
 Name | Description
@@ -21,21 +23,23 @@ Name | Description
 `aura.setspawn` | Allows the permission holder to utilize the setspawn command
 
 ### Commands
-Name | Description
+Usage | Description
 --- | ---
 `/start`| Skips the pre game countdown
 `/setspawn` | Sets the spawn location for all players in the lobby
-`/stats <name>` | Shows the players statistics of the last month
-`/statsd <days> <name>` | Shows the players statistics of the last `days` days
-`/statsall <name>` | Shows the players statistics of all time
+`/stats (<name>)` | Shows the players statistics
 
 ### Config
-> !!! Since it is the **Classic** variant of Aura, you are not able to change the items and other base game elements !!!
 #### config.yml
 Entry | Data Type | Description
 --- | --- | ---
 *min_players* | Int | Sets the **minimum** amount of players to start a game
 *max_players* | Int | Sets the **maximum** amount of players (not spectators)
+*hostname* | String | The hostname of the MySQL server
+*port* | Int | The port of the MySQL server
+*database* | String | The name of the database of the MySQL server
+*username* | String | The username of the MySQL server user
+*password* | String | The password of the MySQL server user
 *waiting_delay* | Int | Sets the **delay** between **waiting for players** messages
 *pre_game_countdown* | Int | Sets the countdown until the game starts
 *protection_countdown* | Int | Sets the countdown until the protection phase ends
@@ -69,6 +73,14 @@ Entry | Data Type | Description | Variables
 *kill* | String | The message when a player got killed | `{player}`, `{killer}`
 *remaining* | String | The message that shows how many players are still alive | `{count}`
 *win* | String | The message when a player has won the game | `{player}`
+*stats_header* | String | The message for the stats command output header | `{player}`
+*stats_ranking* | String | The message for the stats command output ranking | `{rank}`
+*stats_kills* | String | The message for the stats command output kills | `{kills}`
+*stats_deaths* | String | The message for the stats command output deaths | `{deaths}`
+*stats_kd* | String | The message for the stats command output K/D | `{kd}`
+*stats_played* | String | The message for the stats command output played games | `{played}`
+*stats_won* | String | The message for the stats command output won games | `{won}`
+*stats_footer* | String | The message for the stats command output footer | -
 
 ### Screenshots
 ![Inventory Sorting](screenshots/inventory_sorting.png "Inventory Sorting")
