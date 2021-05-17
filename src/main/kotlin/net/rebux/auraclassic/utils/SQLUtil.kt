@@ -12,9 +12,9 @@ object SQLUtil
     {
         Bukkit.getScheduler().runTaskAsynchronously(plugin)
         {
-            sqlConnection.update("CREATE TABLE IF NOT EXISTS Inventories(id int NOT NULL, hotbar varchar, PRIMARY KEY(id));")
-            sqlConnection.update("CREATE TABLE IF NOT EXISTS Statistics(id int NOT NULL, player_uuid varchar(36) NOT NULL, kills int, deaths int, won int, played int, PRIMARY KEY(id));")
-            sqlConnection.update("CREATE TABLE IF NOT EXISTS Players(uuid varchar(36) NOT NULL, statistics_id int, inventories_id int, PRIMARY KEY(id), FOREIGN KEY(statistics_id) REFERENCES Statistics(id), FOREIGN KEY(inventories_id) REFERENCES Inventories(id));")
+            sqlConnection.update("CREATE TABLE IF NOT EXISTS Inventories (id int NOT NULL PRIMARY KEY, hotbar varchar(255));")
+            sqlConnection.update("CREATE TABLE IF NOT EXISTS Statistics(id int NOT NULL PRIMARY KEY, kills int, deaths int, won int, played int);")
+            sqlConnection.update("CREATE TABLE IF NOT EXISTS Players(uuid varchar(36) NOT NULL PRIMARY KEY, statistics_id int, FOREIGN KEY(statistics_id) REFERENCES Statistics(id), inventories_id int, FOREIGN KEY(inventories_id) REFERENCES Inventories(id));")
         }
     }
 }
