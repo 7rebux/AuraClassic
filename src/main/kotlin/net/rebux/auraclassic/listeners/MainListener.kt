@@ -2,6 +2,7 @@ package net.rebux.auraclassic.listeners
 
 import net.rebux.auraclassic.utils.ConfigUtil
 import net.rebux.auraclassic.utils.GameState
+import net.rebux.auraclassic.utils.SQLUtil
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.*
@@ -49,7 +50,8 @@ class MainListener: Listener
                 .replace("{player}", event.entity.name)
                 .replace("{killer}", event.entity.killer.name))
 
-            ac.instance.playerKills[event.entity.killer]!!.inc()
+            SQLUtil.incrementStat(event.entity.killer.uniqueId, "kills")
+            SQLUtil.incrementStat(event.entity.uniqueId, "deaths")
         }
         else
         {
@@ -59,7 +61,8 @@ class MainListener: Listener
                     .replace("{player}", event.entity.name)
                     .replace("{killer}", ac.instance.lastHitBy[event.entity]!!.name))
 
-                ac.instance.playerKills[ac.instance.lastHitBy[event.entity]!!]!!.inc()
+                SQLUtil.incrementStat(ac.instance.lastHitBy[event.entity]!!.uniqueId, "kills")
+                SQLUtil.incrementStat(event.entity.uniqueId, "deaths")
             }
             else
                 Bukkit.broadcastMessage(ConfigUtil.getMessage("death").replace("{player}", event.entity.name))

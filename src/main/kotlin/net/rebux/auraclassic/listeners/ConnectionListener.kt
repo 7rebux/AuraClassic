@@ -24,9 +24,10 @@ class ConnectionListener: Listener
             event.joinMessage = ""
         }
 
-        // set tablist
-        TablistUtil.setTablistName(event.player)
-        TablistUtil.setTablistHeaderFooter(event.player)
+        Bukkit.getScheduler().runTaskAsynchronously(ac.instance) {
+            if (!SQLUtil.hasPlayer(event.player.uniqueId))
+                SQLUtil.addPlayer(event.player)
+        }
     }
 
     @EventHandler
@@ -46,7 +47,8 @@ class ConnectionListener: Listener
                     .replace("{player}", event.player.name)
                     .replace("{killer}", ac.instance.lastHitBy[event.player]!!.name))
 
-                ac.instance.playerKills[ac.instance.lastHitBy[event.player]!!]!!.inc()
+                SQLUtil.incrementStat(ac.instance.lastHitBy[event.player]!!.uniqueId, "kills");
+                SQLUtil.incrementStat(event.player.uniqueId, "deaths")
             }
             else
                 Bukkit.broadcastMessage(ConfigUtil.getMessage("death").replace("{player}", event.player.name))

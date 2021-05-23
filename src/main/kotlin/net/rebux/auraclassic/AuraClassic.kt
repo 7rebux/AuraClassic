@@ -1,5 +1,6 @@
 package net.rebux.auraclassic
 
+import net.rebux.auraclassic.command.StatsCommand
 import net.rebux.auraclassic.listeners.*
 import net.rebux.auraclassic.scheduler.*
 import net.rebux.auraclassic.utils.*
@@ -73,6 +74,8 @@ class AuraClassic: JavaPlugin()
         Bukkit.getPluginManager().registerEvents(MainListener(), this)
         Bukkit.getPluginManager().registerEvents(ConnectionListener(), this)
 
+        Bukkit.getPluginCommand("stats").executor = StatsCommand()
+
         gameState = GameState.PRE_GAME
         waitingScheduler.start()
     }
@@ -85,6 +88,7 @@ class AuraClassic: JavaPlugin()
         players.forEach { player -> ItemUtil.getItems(player.uniqueId).forEach { player.inventory.addItem(it) } }
         players.forEach { it.inventory.armorContents = ItemUtil.getArmor() }
         players.forEach { it.teleport(auraWorldSpawn) }
+        players.forEach { SQLUtil.incrementStat(it.uniqueId, "played") }
         protectionScheduler.start()
         Bukkit.broadcastMessage(ConfigUtil.getMessage("protection_start"))
 
@@ -99,10 +103,10 @@ class AuraClassic: JavaPlugin()
 
         if (players.size == 1) winner = players[0] else winner // TODO mittelpunkt gewinnt
         Bukkit.broadcastMessage(ConfigUtil.getMessage("win").replace("{player}", winner!!.name))
+        SQLUtil.incrementStat(winner.uniqueId, "won")
 
         spectators.addAll(players)
         spectators.forEach { it.teleport(lobbyWorldSpawn) }
-        // TODO save stats to sql database
         postGameScheduler.start()
 
         gameState = GameState.POST_GAME
@@ -110,6 +114,6 @@ class AuraClassic: JavaPlugin()
 
     fun shutdown()
     {
-        // TODO restart server save stats and shit
+        // TODO restart server
     }
 }
