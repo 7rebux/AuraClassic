@@ -8,25 +8,19 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 
-class ConnectionListener: Listener
-{
+class ConnectionListener: Listener {
     @EventHandler
-    fun onConnect(event: PlayerJoinEvent)
-    {
-        if (ac.instance.gameState == GameState.PRE_GAME)
-        {
+    fun onConnect(event: PlayerJoinEvent) {
+        if (ac.instance.gameState == GameState.PRE_GAME) {
             event.joinMessage = ConfigUtil.getMessage("join").replace("{player}", event.player.name)
             event.player.inventory.setItem(8, ItemUtil.getInventorySortingItem())
             event.player.teleport(ac.instance.lobbyWorldSpawn)
 
-            if (Bukkit.getOnlinePlayers().size >= ConfigUtil.getInt("min_players"))
-            {
+            if (Bukkit.getOnlinePlayers().size >= ConfigUtil.getInt("min_players")) {
                 ac.instance.waitingScheduler.stop()
                 ac.instance.preGameScheduler.start()
             }
-        }
-        else
-        {
+        } else {
             GameUtil.addSpectator(event.player)
             event.joinMessage = ""
         }
@@ -38,26 +32,22 @@ class ConnectionListener: Listener
     }
 
     @EventHandler
-    fun onDisconnect(event: PlayerQuitEvent)
-    {
+    fun onDisconnect(event: PlayerQuitEvent) {
         event.quitMessage = ""
 
         if (arrayListOf(GameState.PRE_GAME, GameState.POST_GAME).contains(ac.instance.gameState))
             event.quitMessage = ConfigUtil.getMessage("quit").replace("{player}", event.player.name)
-        else if (ac.instance.gameState == GameState.INGAME && ac.instance.players.contains(event.player))
-        {
+        else if (ac.instance.gameState == GameState.INGAME && ac.instance.players.contains(event.player)) {
             ac.instance.players.remove(event.player)
 
-            if (ac.instance.lastHitBy.containsKey(event.player))
-            {
+            if (ac.instance.lastHitBy.containsKey(event.player)) {
                 Bukkit.broadcastMessage(ConfigUtil.getMessage("kill")
                     .replace("{player}", event.player.name)
                     .replace("{killer}", ac.instance.lastHitBy[event.player]!!.name))
 
                 SQLUtil.incrementStat(ac.instance.lastHitBy[event.player]!!.uniqueId, "kills");
                 SQLUtil.incrementStat(event.player.uniqueId, "deaths")
-            }
-            else
+            } else
                 Bukkit.broadcastMessage(ConfigUtil.getMessage("death").replace("{player}", event.player.name))
 
             if (ConfigUtil.getBoolean("remaining_on_quit") && ac.instance.players.size > 1)
@@ -66,8 +56,7 @@ class ConnectionListener: Listener
             // check if the last player left
             if (ac.instance.players.size == 1)
                 ac.instance.endGame()
-        }
-        else
+        } else
             GameUtil.removeSpectator(event.player)
     }
 }

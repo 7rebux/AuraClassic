@@ -13,8 +13,7 @@ import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 
-class AuraClassic: JavaPlugin()
-{
+class AuraClassic: JavaPlugin() {
     private val mainFile = File(dataFolder, "config.yml")
     private val messagesFile = File(dataFolder, "messages.yml")
     val mainConfig: YamlConfiguration = YamlConfiguration.loadConfiguration(mainFile)
@@ -24,7 +23,7 @@ class AuraClassic: JavaPlugin()
 
     private lateinit var lobbyWorld: World
     private lateinit var auraWorld: World
-    private lateinit var lobbyWorldSpawn: Location
+    lateinit var lobbyWorldSpawn: Location
     private lateinit var auraWorldSpawn: Location
 
     lateinit var waitingScheduler: WaitingScheduler
@@ -39,13 +38,7 @@ class AuraClassic: JavaPlugin()
 
     lateinit var gameState: GameState
 
-    companion object
-    {
-        lateinit var instance: AuraClassic
-    }
-
-    override fun onEnable()
-    {
+    override fun onEnable() {
         instance = this
 
         // connect to database
@@ -80,8 +73,7 @@ class AuraClassic: JavaPlugin()
         waitingScheduler.start()
     }
 
-    fun startGame()
-    {
+    fun startGame() {
         players.addAll(Bukkit.getOnlinePlayers())
         players.forEach { it.inventory.clear() }
         players.forEach { it.level = 0; it.exp = 0F }
@@ -95,8 +87,7 @@ class AuraClassic: JavaPlugin()
         gameState = GameState.INGAME
     }
 
-    fun endGame()
-    {
+    fun endGame() {
         var winner: Player? = null
 
         ingameScheduler.stop()
@@ -112,8 +103,12 @@ class AuraClassic: JavaPlugin()
         gameState = GameState.POST_GAME
     }
 
-    fun shutdown()
-    {
+    fun shutdown() {
+        sqlConnection.disconnect()
         // TODO restart server
+    }
+
+    companion object {
+        lateinit var instance: AuraClassic
     }
 }

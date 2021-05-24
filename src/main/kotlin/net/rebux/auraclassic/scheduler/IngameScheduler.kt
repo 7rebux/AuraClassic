@@ -5,15 +5,12 @@ import net.rebux.auraclassic.utils.ConfigUtil
 import net.rebux.auraclassic.utils.ItemUtil
 import org.bukkit.Bukkit
 
-class IngameScheduler(override var delay: Long = 20L) : IScheduler
-{
+class IngameScheduler(override var delay: Long = 20L) : IScheduler {
     private val countdown: Int = ConfigUtil.getInt("ingame_countdown")
     private var time: Int = countdown
 
-    override fun run()
-    {
-        if (time == 0 || AuraClassic.instance.players.size == 1)
-        {
+    override fun run() {
+        if (time == 0 || AuraClassic.instance.players.size == 1) {
             AuraClassic.instance.endGame()
             return
         }
@@ -30,8 +27,7 @@ class IngameScheduler(override var delay: Long = 20L) : IScheduler
         --time
     }
 
-    private fun giveTracker()
-    {
+    private fun giveTracker() {
         AuraClassic.instance.players.forEach { it.inventory.addItem(ItemUtil.getTrackerItem()) }
         Bukkit.broadcastMessage(ConfigUtil.getMessage("tracker_info"))
     }

@@ -7,17 +7,14 @@ import org.bukkit.potion.PotionEffectType
 import java.util.*
 import kotlin.collections.ArrayList
 
-object ItemUtil
-{
-    fun getInventorySortingItem(): ItemStack
-    {
+object ItemUtil {
+    fun getInventorySortingItem(): ItemStack {
         return ItemBuilder(Material.CHEST)
             .setDisplayName(ConfigUtil.getString("inventory_sorting_name"))
             .toItemStack()
     }
 
-    fun getItems(uuid: UUID): ArrayList<ItemStack>
-    {
+    fun getItems(uuid: UUID): ArrayList<ItemStack> {
         val items = arrayListOf<ItemStack>()
 
         items.add(ItemBuilder(Material.STICK).addEnchantment(Enchantment.KNOCKBACK, 4).toItemStack())
@@ -33,8 +30,7 @@ object ItemUtil
         return items
     }
 
-    fun getArmor(): Array<ItemStack?>
-    {
+    fun getArmor(): Array<ItemStack?> {
         val items = arrayOfNulls<ItemStack>(4)
 
         items[0] = ItemBuilder(Material.IRON_BOOTS).addEnchantment(Enchantment.PROTECTION_FALL, 10).toItemStack()
@@ -45,8 +41,7 @@ object ItemUtil
         return items
     }
 
-    fun getTrackerItem(): ItemStack
-    {
+    fun getTrackerItem(): ItemStack {
         return ItemBuilder(Material.COMPASS)
             .setDisplayName(ConfigUtil.getString("tracker_name"))
             .toItemStack()

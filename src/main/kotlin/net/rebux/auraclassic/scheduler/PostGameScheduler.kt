@@ -4,14 +4,11 @@ import net.rebux.auraclassic.AuraClassic
 import net.rebux.auraclassic.utils.ConfigUtil
 import org.bukkit.Bukkit
 
-class PostGameScheduler(override var delay: Long = 20L) : IScheduler
-{
+class PostGameScheduler(override var delay: Long = 20L) : IScheduler {
     private var countdown: Int = ConfigUtil.getInt("post_game_countdown")
 
-    override fun run()
-    {
-        if (countdown == 0)
-        {
+    override fun run() {
+        if (countdown == 0) {
             stop()
             AuraClassic.instance.shutdown()
             return
