@@ -10,13 +10,6 @@ class WaitingScheduler(override var delay: Long = 20L) : IScheduler
 
     override fun run()
     {
-        if (Bukkit.getOnlinePlayers().size >= ConfigUtil.getInt("min_players"))
-        {
-            stop()
-            AuraClassic.instance.preGameScheduler.start()
-            return
-        }
-
         if (countdown % ConfigUtil.getInt("waiting_delay") == 0)
             Bukkit.broadcastMessage(ConfigUtil.getMessage("waiting"))
 

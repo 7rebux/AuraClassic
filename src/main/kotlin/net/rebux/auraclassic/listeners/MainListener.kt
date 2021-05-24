@@ -17,13 +17,10 @@ import org.bukkit.event.player.*
 import org.bukkit.event.weather.WeatherChangeEvent
 import net.rebux.auraclassic.AuraClassic as ac
 
-class MainListener: Listener
-{
+class MainListener: Listener {
     @EventHandler
-    fun onHit(event: EntityDamageByEntityEvent)
-    {
-        if (event.entity is ItemFrame)
-        {
+    fun onHit(event: EntityDamageByEntityEvent) {
+        if (event.entity is ItemFrame) {
             event.isCancelled = true
             return
         }
@@ -35,8 +32,7 @@ class MainListener: Listener
     }
 
     @EventHandler
-    fun onDeath(event: PlayerDeathEvent)
-    {
+    fun onDeath(event: PlayerDeathEvent) {
         event.deathMessage = ""
 
         if (ac.instance.gameState != GameState.INGAME)
@@ -44,19 +40,15 @@ class MainListener: Listener
 
         ac.instance.players.remove(event.entity)
 
-        if (event.entity.killer != null)
-        {
+        if (event.entity.killer != null) {
             Bukkit.broadcastMessage(ConfigUtil.getMessage("kill")
                 .replace("{player}", event.entity.name)
                 .replace("{killer}", event.entity.killer.name))
 
             SQLUtil.incrementStat(event.entity.killer.uniqueId, "kills")
             SQLUtil.incrementStat(event.entity.uniqueId, "deaths")
-        }
-        else
-        {
-            if (ac.instance.lastHitBy.containsKey(event.entity))
-            {
+        } else {
+            if (ac.instance.lastHitBy.containsKey(event.entity)) {
                 Bukkit.broadcastMessage(ConfigUtil.getMessage("kill")
                     .replace("{player}", event.entity.name)
                     .replace("{killer}", ac.instance.lastHitBy[event.entity]!!.name))
@@ -77,10 +69,8 @@ class MainListener: Listener
     }
 
     @EventHandler
-    fun onChat(event: AsyncPlayerChatEvent)
-    {
-        if (ac.instance.spectators.contains(event.player))
-        {
+    fun onChat(event: AsyncPlayerChatEvent) {
+        if (ac.instance.spectators.contains(event.player)) {
             ac.instance.spectators.forEach{
                 it.sendMessage(ConfigUtil.getMessage("chat_spectator")
                     .replace("{player}", event.player.name)
@@ -93,31 +83,46 @@ class MainListener: Listener
     }
 
     @EventHandler
-    fun onHangingBreak(event: HangingBreakEvent)
-    {
+    fun onRightClickBlock(event: PlayerInteractEvent) {
+        if (event.action != Action.RIGHT_CLICK_BLOCK)
+            return
+
+        if (listOf(
+                Material.CHEST,
+                Material.HOPPER,
+                Material.DISPENSER,
+                Material.TRAPPED_CHEST,
+                Material.ANVIL,
+                Material.WORKBENCH,
+                Material.FURNACE,
+                Material.ENDER_CHEST,
+                Material.DROPPER
+            ).contains(event.clickedBlock.type))
+            event.isCancelled = true
+    }
+
+    @EventHandler
+    fun onHangingBreak(event: HangingBreakEvent) {
         //TODO still drop the item tho
         if (event.cause == HangingBreakEvent.RemoveCause.ENTITY)
             event.isCancelled = true
     }
 
     @EventHandler
-    fun onTrample(event: PlayerInteractEvent)
-    {
+    fun onTrample(event: PlayerInteractEvent) {
         // TODO allow mobs to trample tho (maybe mobGriefing = false)
         if (event.action == Action.PHYSICAL && event.clickedBlock.type == Material.SOIL)
             event.isCancelled = true
     }
 
     @EventHandler
-    fun onDamage(event: EntityDamageEvent)
-    {
+    fun onDamage(event: EntityDamageEvent) {
         if (ac.instance.gameState != GameState.INGAME || ac.instance.protectionScheduler.running)
             event.isCancelled = true
     }
 
     @EventHandler
-    fun onFoodChange(event: FoodLevelChangeEvent)
-    {
+    fun onFoodChange(event: FoodLevelChangeEvent) {
         if (ac.instance.gameState == GameState.INGAME)
             return
 
@@ -125,39 +130,33 @@ class MainListener: Listener
     }
 
     @EventHandler
-    fun onWeatherChange(event: WeatherChangeEvent)
-    {
+    fun onWeatherChange(event: WeatherChangeEvent) {
         event.isCancelled = true
     }
 
     @EventHandler
-    fun onDrop(event: PlayerDropItemEvent)
-    {
+    fun onDrop(event: PlayerDropItemEvent) {
         event.isCancelled = true
     }
 
     @EventHandler
-    fun onBreak(event: BlockBreakEvent)
-    {
+    fun onBreak(event: BlockBreakEvent) {
         event.isCancelled = true
     }
 
     @EventHandler
-    fun onPlace(event: BlockPlaceEvent)
-    {
+    fun onPlace(event: BlockPlaceEvent) {
         event.isCancelled = true
     }
 
     @EventHandler
-    fun onPickup(event: PlayerPickupItemEvent)
-    {
+    fun onPickup(event: PlayerPickupItemEvent) {
         if (ac.instance.spectators.contains(event.player))
             event.isCancelled = true
     }
 
     @EventHandler
-    fun onAchievement(event: PlayerAchievementAwardedEvent)
-    {
+    fun onAchievement(event: PlayerAchievementAwardedEvent) {
         event.isCancelled = true
     }
 }

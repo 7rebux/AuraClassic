@@ -17,6 +17,13 @@ class ConnectionListener: Listener
         {
             event.joinMessage = ConfigUtil.getMessage("join").replace("{player}", event.player.name)
             event.player.inventory.setItem(8, ItemUtil.getInventorySortingItem())
+            event.player.teleport(ac.instance.lobbyWorldSpawn)
+
+            if (Bukkit.getOnlinePlayers().size >= ConfigUtil.getInt("min_players"))
+            {
+                ac.instance.waitingScheduler.stop()
+                ac.instance.preGameScheduler.start()
+            }
         }
         else
         {
