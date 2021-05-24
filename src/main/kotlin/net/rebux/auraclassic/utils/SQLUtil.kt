@@ -50,7 +50,7 @@ object SQLUtil {
     fun incrementStat(uuid: UUID, column: String) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin) {
             sqlConnection.update("""
-                UPDATE statistics, Players
+                UPDATE Statistics, Players
                 SET $column = $column + 1
                 WHERE statistics_id = id
 	                AND uuid = '$uuid'
@@ -67,7 +67,37 @@ object SQLUtil {
         """.trimIndent()).also { resultSet -> resultSet.next(); return resultSet.getString("hotbar") }
     }
 
-    fun addHotbar(uuid: UUID) {
+    private fun hasHotbar(hotbar: String): Boolean {
+        sqlConnection.query("""
+            SELECT hotbar
+            FROM Inventories
+            WHERE hotbar = '$hotbar';
+        """.trimIndent()).also { resultSet -> return resultSet.next() }
+    }
 
+    fun setHotbar(uuid: UUID, hotbar: String) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin) {
+            val id: Int
+
+            if (!hasHotbar(hotbar)) {
+                sqlConnection.query("""
+                    INSERT INTO Inventories(hotbar)
+                    VALUES('$hotbar')
+                    SELECT LAST_INSERT_ID() as 'id';
+                """.trimIndent()).also { resultSet -> resultSet.next(); id = resultSet.getInt("id") }
+            } else {
+                sqlConnection.query("""
+                    SELECT id
+                    FROM Inventories
+                    WHERE hotbar = '$hotbar'
+                """.trimIndent()).also { resultSet -> resultSet.next(); id = resultSet.getInt("id") }
+            }
+
+            sqlConnection.update("""
+                UPDATE Players
+                SET inventories_id = $id
+                WHERE uuid = '$uuid'
+            """.trimIndent())
+        }
     }
 }
