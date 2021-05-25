@@ -1,19 +1,12 @@
 ### Tasks
 
-- [ ] Aura Map
-    - [ ] Remove snow ?
-    - [ ] Set spawn point
-    - [ ] Dont save world
-- [ ] Stats
-    - [ ] SQL Database
-    - [ ] Add deaths, kills, rounds, wins etc
-    - [ ] Stat commands
 - [ ] Inventory sorting
     - [ ] Inventory sorting GUI
     - [ ] Save to database
     - [ ] Load from database
 - [ ] Misc
     - [ ] Tracker point to players
+      [ ] Add default hotbar
     - [ ] Countdowns show ´1 second´ instead of ´1 seconds´
 - [ ] Bugfixes
     - [ ] Allow creepers to trample (mobGriefing = false ?)
@@ -23,4 +16,3 @@
 ### Currently working on
 
 - [ ] Disable weather
-- [ ] Update README
