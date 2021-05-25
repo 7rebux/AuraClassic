@@ -30,7 +30,7 @@ class AuraClassic: JavaPlugin() {
     lateinit var preGameScheduler: PreGameScheduler
     lateinit var protectionScheduler: ProtectionScheduler
     lateinit var ingameScheduler: IngameScheduler
-    lateinit var postGameScheduler: PostGameScheduler
+    private lateinit var postGameScheduler: PostGameScheduler
 
     val players = arrayListOf<Player>()
     val spectators = arrayListOf<Player>()
@@ -51,10 +51,12 @@ class AuraClassic: JavaPlugin() {
         SQLUtil.createTables()
 
         // initialize locations
-        lobbyWorld = Bukkit.createWorld(WorldCreator("world"))
+        lobbyWorld = Bukkit.createWorld(WorldCreator("lobby"))
         auraWorld = Bukkit.createWorld(WorldCreator("aura_map"))
-        lobbyWorldSpawn = Location(lobbyWorld, 0.0, 60.0, 0.0)
-        auraWorldSpawn = Location(auraWorld, 0.0, 64.5, -7.0)
+        lobbyWorldSpawn = Location(lobbyWorld, 216.5, 4.0, 442.5, 270F, 0F)
+        auraWorldSpawn = Location(auraWorld, 8.5, 64.5, -8.5, 90F, 0F)
+        lobbyWorld.isAutoSave = false
+        auraWorld.isAutoSave = false
 
         // initialize schedulers
         waitingScheduler = WaitingScheduler()
@@ -77,7 +79,7 @@ class AuraClassic: JavaPlugin() {
         players.addAll(Bukkit.getOnlinePlayers())
         players.forEach { it.inventory.clear() }
         players.forEach { it.level = 0; it.exp = 0F }
-        players.forEach { player -> ItemUtil.getItems(player.uniqueId).forEach { player.inventory.addItem(it) } }
+        Bukkit.getScheduler().runTaskAsynchronously(this) { players.forEach { player -> ItemUtil.getItems(player.uniqueId).forEach { player.inventory.addItem(it) } } }
         players.forEach { it.inventory.armorContents = ItemUtil.getArmor() }
         players.forEach { it.teleport(auraWorldSpawn) }
         players.forEach { SQLUtil.incrementStat(it.uniqueId, "played") }
@@ -104,6 +106,8 @@ class AuraClassic: JavaPlugin() {
     }
 
     fun shutdown() {
+        Bukkit.getServer().unloadWorld(auraWorld, true)
+        Bukkit.getServer().unloadWorld(lobbyWorld, true)
         sqlConnection.disconnect()
         // TODO restart server
     }
