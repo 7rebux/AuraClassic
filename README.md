@@ -12,7 +12,7 @@ A minecraft plugin of the famous game mode **Aura Classic** made in pure [Kotlin
 
 ### Setup
 - Drag the plugin jar file into your **plugins** folder
-- Drag the **aura_world** folder into your server root folder
+- Drag the **aura_world**, and the **lobby** folder into your server root folder
 - Enter your MySQL server connection credentials in the **config.yml** file
 
 ### Permissions
@@ -20,13 +20,11 @@ Name | Description
 --- | ---
 `aura.start`| Allows the permission holder to utilize the start command
 `aura.kick` | Allows the permission holder to kick a player out of the lobby phase and join himself
-`aura.setspawn` | Allows the permission holder to utilize the setspawn command
 
 ### Commands
 Usage | Description
 --- | ---
 `/start`| Skips the pre game countdown
-`/setspawn` | Sets the spawn location for all players in the lobby
 `/stats (<name>)` | Shows the players statistics
 
 ### Config
@@ -64,11 +62,11 @@ Entry | Data Type | Description | Variables
 *ingame_end_timer* | String | The message when the ingame end timer changes | `{time}`
 *protection_timer* | String | The message when the protection phase timer changes | `{time}`
 *post_game_timer* | String | The message when the post game timer changes | `{time}`
-*waiting* | String | The **waiting for players** message | - 
+*waiting* | String | The "waiting for players" message | - 
 *protection_start* | String | The message when the protection time begins | -
 *protection_end* | String | The message when the protection time ends | -
-*tracker_info* | String | The message when the players receive the **tracker** item | -
-*ingame_end_info* | String | The message when the game is ending in **60 seconds** | -
+*tracker_info* | String | The message when the players receive the tracker item | -
+*ingame_end_info* | String | The message when the game is ending in 60 seconds | -
 *death* | String | The message when a player died | `{player}`
 *kill* | String | The message when a player got killed | `{player}`, `{killer}`
 *remaining* | String | The message that shows how many players are still alive | `{count}`
@@ -81,6 +79,8 @@ Entry | Data Type | Description | Variables
 *stats_played* | String | The message for the stats command output played games | `{played}`
 *stats_won* | String | The message for the stats command output won games | `{won}`
 *stats_footer* | String | The message for the stats command output footer | -
+*stats_not_found* | String | The message the statistics could not be found | -
+*stats_invalid_rank* | String | The message if the user input contains an invalid rank | -
 
 ### Screenshots
 ![Inventory Sorting](screenshots/inventory_sorting.png "Inventory Sorting")
