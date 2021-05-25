@@ -2,12 +2,11 @@
 
 - [ ] Inventory sorting
     - [ ] Inventory sorting GUI
-    - [ ] Save to database
-    - [ ] Load from database
 - [ ] Misc
     - [ ] Tracker point to players
-      [ ] Add default hotbar
+    - [ ] Add default hotbar
     - [ ] Countdowns show ´1 second´ instead of ´1 seconds´
+    - [ ] closest to mid wins
 - [ ] Bugfixes
     - [ ] Allow creepers to trample (mobGriefing = false ?)
     - [ ] Drop items in item frame after explosion
