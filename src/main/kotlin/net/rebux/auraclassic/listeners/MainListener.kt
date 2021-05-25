@@ -1,7 +1,9 @@
 package net.rebux.auraclassic.listeners
 
+import net.rebux.auraclassic.inventories.SortingInventory
 import net.rebux.auraclassic.utils.ConfigUtil
 import net.rebux.auraclassic.utils.GameState
+import net.rebux.auraclassic.utils.ItemSerializer
 import net.rebux.auraclassic.utils.SQLUtil
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -13,6 +15,9 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.*
 import org.bukkit.event.hanging.HangingBreakEvent
+import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryCloseEvent
+import org.bukkit.event.inventory.InventoryMoveItemEvent
 import org.bukkit.event.player.*
 import org.bukkit.event.weather.WeatherChangeEvent
 import net.rebux.auraclassic.AuraClassic as ac
@@ -99,6 +104,36 @@ class MainListener: Listener {
                 Material.DROPPER
             ).contains(event.clickedBlock.type))
             event.isCancelled = true
+    }
+
+    @EventHandler
+    fun onRightClickItem(event: PlayerInteractEvent) {
+        if (event.player.itemInHand?.itemMeta?.displayName == ConfigUtil.getString("inventory_sorting_name"))
+            event.player.openInventory(SortingInventory(event.player).inventory)
+    }
+
+    @EventHandler
+    fun onInventoryClick(event: InventoryClickEvent) {
+        if (ac.instance.gameState == GameState.INGAME)
+            return
+
+        if (event.inventory.name != ConfigUtil.getString("inventory_sorting_name_inventory"))
+            event.isCancelled = true
+    }
+
+    @EventHandler
+    fun onInventoryMoveItem(event: InventoryMoveItemEvent) {
+        // TODO nothing is happening fuck you
+        if (event.source.name == ConfigUtil.getString("inventory_sorting_name_inventory"))
+            event.isCancelled = true
+    }
+
+    @EventHandler
+    fun onInventoryClose(event: InventoryCloseEvent) {
+        if (event.inventory.name == ConfigUtil.getString("inventory_sorting_name_inventory")) {
+            if (event.inventory.contents.isNotEmpty())
+                SQLUtil.setHotbar(event.player.uniqueId, ItemSerializer.itemStackArrayListToBase64(arrayListOf(*event.inventory.contents)))
+        }
     }
 
     @EventHandler
