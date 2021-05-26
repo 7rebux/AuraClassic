@@ -1,10 +1,7 @@
 ### Tasks
 
-- [ ] Inventory sorting
-    - [ ] Inventory sorting GUI
 - [ ] Misc
     - [ ] Tracker point to players
-    - [ ] Add default hotbar
     - [ ] Countdowns show ´1 second´ instead of ´1 seconds´
     - [ ] closest to mid wins
 - [ ] Bugfixes
