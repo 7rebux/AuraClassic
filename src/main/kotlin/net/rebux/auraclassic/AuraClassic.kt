@@ -82,6 +82,7 @@ class AuraClassic: JavaPlugin() {
         Bukkit.getScheduler().runTaskAsynchronously(this) { players.forEach { player -> ItemUtil.getItems(player.uniqueId).forEach { player.inventory.addItem(it) } } }
         players.forEach { it.inventory.armorContents = ItemUtil.getArmor() }
         players.forEach { it.teleport(auraWorldSpawn) }
+        players.forEach { it.bedSpawnLocation = auraWorldSpawn }
         players.forEach { SQLUtil.incrementStat(it.uniqueId, "played") }
         protectionScheduler.start()
         Bukkit.broadcastMessage(ConfigUtil.getMessage("protection_start"))
