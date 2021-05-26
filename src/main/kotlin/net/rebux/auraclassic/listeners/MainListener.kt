@@ -15,6 +15,7 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.*
 import org.bukkit.event.hanging.HangingBreakEvent
+import org.bukkit.event.inventory.InventoryAction
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryMoveItemEvent
@@ -117,22 +118,24 @@ class MainListener: Listener {
         if (ac.instance.gameState == GameState.INGAME)
             return
 
-        if (event.inventory.name != ConfigUtil.getString("inventory_sorting_name_inventory"))
-            event.isCancelled = true
-    }
-
-    @EventHandler
-    fun onInventoryMoveItem(event: InventoryMoveItemEvent) {
-        // TODO nothing is happening fuck you
-        if (event.source.name == ConfigUtil.getString("inventory_sorting_name_inventory"))
+        if (event.inventory.name == ConfigUtil.getString("inventory_sorting_name_inventory")) {
+            if (!listOf(InventoryAction.PICKUP_ALL, InventoryAction.PLACE_ALL, InventoryAction.SWAP_WITH_CURSOR).contains(event.action))
+                event.isCancelled = true
+            else
+                if (listOf(InventoryAction.SWAP_WITH_CURSOR, InventoryAction.PLACE_ALL).contains(event.action)) {
+                    if (event.rawSlot > 8)
+                        event.isCancelled = true
+                }
+        } else
             event.isCancelled = true
     }
 
     @EventHandler
     fun onInventoryClose(event: InventoryCloseEvent) {
         if (event.inventory.name == ConfigUtil.getString("inventory_sorting_name_inventory")) {
-            if (event.inventory.contents.isNotEmpty())
-                SQLUtil.setHotbar(event.player.uniqueId, ItemSerializer.itemStackArrayListToBase64(arrayListOf(*event.inventory.contents)))
+            val data: String = ItemSerializer.itemStackArrayListToBase64(arrayListOf(*event.inventory.contents))
+            if (data != "rO0ABXcEAAAACXBwcHBwcHBwcA==") // check if inventory is not empty
+                SQLUtil.setHotbar(event.player.uniqueId, data)
         }
     }
 
