@@ -95,7 +95,7 @@ class AuraClassic: JavaPlugin() {
 
         ingameScheduler.stop()
 
-        if (players.size == 1) winner = players[0] else winner // TODO mittelpunkt gewinnt
+        if (players.size == 1) winner = players[0] else GameUtil.getClosestPlayerToLocation(auraWorldSpawn, players)
         Bukkit.broadcastMessage(ConfigUtil.getMessage("win").replace("{player}", winner!!.name))
         SQLUtil.incrementStat(winner.uniqueId, "won")
 

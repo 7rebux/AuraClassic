@@ -1,10 +1,7 @@
 package net.rebux.auraclassic.listeners
 
 import net.rebux.auraclassic.inventories.SortingInventory
-import net.rebux.auraclassic.utils.ConfigUtil
-import net.rebux.auraclassic.utils.GameState
-import net.rebux.auraclassic.utils.ItemSerializer
-import net.rebux.auraclassic.utils.SQLUtil
+import net.rebux.auraclassic.utils.*
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.*
@@ -18,9 +15,10 @@ import org.bukkit.event.hanging.HangingBreakEvent
 import org.bukkit.event.inventory.InventoryAction
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
-import org.bukkit.event.inventory.InventoryMoveItemEvent
 import org.bukkit.event.player.*
 import org.bukkit.event.weather.WeatherChangeEvent
+import java.util.function.Predicate
+import java.util.stream.Collectors.toList
 import net.rebux.auraclassic.AuraClassic as ac
 
 class MainListener: Listener {
@@ -86,6 +84,15 @@ class MainListener: Listener {
         }
         else
             event.format = ConfigUtil.getMessage("chat").replace("{player}", "%1\$s").replace("{message}", "%2\$s")
+    }
+
+    @EventHandler
+    fun onMove(event: PlayerMoveEvent) {
+        ac.instance.players.forEach { player ->
+            player.compassTarget = (ac.instance.players.stream().filter { it != player }.collect(toList()) as ArrayList<Player>).let {
+                GameUtil.getClosestPlayerToLocation(player.location, it).location
+            }
+        }
     }
 
     @EventHandler
