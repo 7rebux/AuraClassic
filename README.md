@@ -45,6 +45,7 @@ Entry | Data Type | Description
 *tracker_countdown* | Int | Sets the countdown until the players get the **tracker** item
 *post_game_countdown* | Int | Sets the countdown until the server restarts after the game
 *inventory_sorting_name* | String | Sets the display name for the inventory sorting item
+*inventory_sorting_name_inventory* | String | Sets the display name for the sorting inventory
 *tracker_name* | String | Sets the display name for the tracker item
 *tablist_header* | String | Sets the header of the tablist
 *tablist_footer* | String | Sets the footer of the tablist
