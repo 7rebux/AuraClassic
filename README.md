@@ -1,34 +1,80 @@
 # Aura Classic Plugin
 A minecraft plugin of the famous game mode **Aura Classic** made in pure [Kotlin](https://kotlinlang.org/) with the [Bukkit API](https://getbukkit.org/)
 
-### Currently Supported Minecraft Versions
+## Currently Supported Minecraft Versions
 - Minecraft 1.8.8
 
-### Features
+## Features
 - Fully customizable messages, countdowns and much more through a config file
 - Statistics system with [MySQL](https://www.mysql.com/) (UUID based)
 - Spectator mode and chat
 - ... & basically every feature the game mode had on the [GommeHD.net](https://www.gommehd.net/) server
 
-### Setup
+## Setup
 - Drag the plugin jar file into your **plugins** folder
 - Drag the **aura_world**, and the **lobby** folder into your server root folder
 - Enter your MySQL server connection credentials in the **config.yml** file
 
-### Permissions
+## Permissions
 Name | Description
 --- | ---
 `aura.start`| Allows the permission holder to utilize the start command
 `aura.kick` | Allows the permission holder to kick a player out of the lobby phase and join himself
 
-### Commands
+## Commands
 Usage | Description
 --- | ---
 `/start`| Skips the pre game countdown
 `/stats (<name>)` | Shows the players statistics
 
-### Config
-#### config.yml
+## Config
+
+### Custom Maps
+If you want to use your own lobby or ingame map please make sure you follow the steps below.
+
+1. Disable set the following game rules in your world to false:
+    - doDaylightCircle
+    - doMobSpawning
+    - doWeatherCircle
+    - mobGriefing
+2. Rename your world folder to
+    - *aura_map* for the ingame map
+    - *lobby* for the lobby
+3. Set the spawn point inside the *config.yaml* file
+4. Drag the world into your server root folder
+
+> Make sure your world is not a .zip file or any other archive, it has to be a folder
+
+### Custom Items
+Using custom items is more a lot difficult than using custom maps since this is the classic variant of Aura, 
+even though it is still possible. 
+
+First create a Base64 String containing an ArrayList of 9 items using the following method:
+```kotlin
+fun itemStackArrayListToBase64(items: ArrayList<ItemStack>): String {
+   val outputStream = ByteArrayOutputStream()
+   val dataOutput = BukkitObjectOutputStream(outputStream)
+
+   dataOutput.writeInt(items.size)
+
+   for (i in 0 until items.size)
+       dataOutput.writeObject(items[i])
+
+   dataOutput.close()
+
+   return Base64Coder.encodeLines(outputStream.toByteArray())
+}
+```
+
+Using the output of the method make an SQL request to the database. Replace the default inventory sorting, which can be
+located in the *Inventories* table with the id *1*. For an example look at the query below:
+```mysql
+UPDATE Inventories
+SET hotbar = "{value}"
+WHERE id = 1;
+```
+
+### config.yml
 Entry | Data Type | Description
 --- | --- | ---
 *min_players* | Int | Sets the **minimum** amount of players to start a game
@@ -52,7 +98,7 @@ Entry | Data Type | Description
 *remaining_on_quit* | Boolean | Shows how many players are remaining after a player disconnected
 > Each countdown value is measured in seconds
 
-#### messages.yml
+### messages.yml
 Entry | Data Type | Description | Variables
 --- | --- | --- | ---
 *join* | String | The message when a player joins the server | `{player}`
@@ -83,13 +129,13 @@ Entry | Data Type | Description | Variables
 *stats_not_found* | String | The message the statistics could not be found | -
 *stats_invalid_rank* | String | The message if the user input contains an invalid rank | -
 
-### Screenshots
+## Screenshots
 ![Inventory Sorting](screenshots/inventory_sorting.png "Inventory Sorting")
 
 ![Statistics](screenshots/statistics.png "Statistics")
 
-### Contributing
+## Contributing
 When contributing to this repository, please first discuss the change you wish to make via issue, or any other method with the owner of this repository before making a change.
 
-### Licence
+## Licence
 This project is licensed under the MIT License - see the [LICENSE](/LICENSE) file for details
