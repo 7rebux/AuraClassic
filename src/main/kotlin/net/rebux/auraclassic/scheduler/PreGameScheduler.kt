@@ -22,7 +22,6 @@ class PreGameScheduler(override var delay: Long = 20L) : IScheduler {
         }
 
         if (time == 0) {
-            stop()
             AuraClassic.instance.startGame()
             return
         }
