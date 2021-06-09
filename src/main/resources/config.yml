@@ -1,13 +1,29 @@
+# minimum & maximum players to start the game
 min_players: 6
 max_players: 12
 
 # MySQL database settings
 hostname: "hostname"
-port: 0
+port: 0 # TODO standard port
 database: "database"
 username: "username"
 password: "password"
 
+# spawn points
+lobby_spawn_point:
+  x: 216.5
+  y: 4.0
+  z: 442.5
+  yaw: 270.0
+  pitch: 0.0
+ingame_spawn_point:
+  x: 8.5
+  y: 64.5
+  z: -8.5
+  yaw: 90.0
+  pitch: 0.0
+
+# timers & delays
 waiting_delay: 20
 pre_game_countdown: 60
 protection_countdown: 30
@@ -15,11 +31,15 @@ ingame_countdown: 1800
 tracker_countdown: 1200
 post_game_countdown: 20
 
+# item & inventory names
 inventory_sorting_name: "&cInventarsortierung &7(Rechtsklick)"
 inventory_sorting_name_inventory: "&cInventarsortierung"
 tracker_name: "&6Tracker"
 
+# tablist
+# TODO not implemented yet
 tablist_header: "Header"
 tablist_footer: "Footer"
 
+# advanced preferences
 remaining_on_quit: False

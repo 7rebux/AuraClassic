@@ -1,6 +1,6 @@
 package net.rebux.auraclassic
 
-import net.rebux.auraclassic.command.StatsCommand
+import net.rebux.auraclassic.commands.*
 import net.rebux.auraclassic.listeners.*
 import net.rebux.auraclassic.scheduler.*
 import net.rebux.auraclassic.utils.*
@@ -70,12 +70,14 @@ class AuraClassic: JavaPlugin() {
         Bukkit.getPluginManager().registerEvents(ConnectionListener(), this)
 
         Bukkit.getPluginCommand("stats").executor = StatsCommand()
+        Bukkit.getPluginCommand("start").executor = StartCommand()
 
         gameState = GameState.PRE_GAME
         waitingScheduler.start()
     }
 
     fun startGame() {
+        preGameScheduler.stop()
         players.addAll(Bukkit.getOnlinePlayers())
         players.forEach { it.inventory.clear() }
         players.forEach { it.level = 0; it.exp = 0F }
@@ -91,18 +93,16 @@ class AuraClassic: JavaPlugin() {
     }
 
     fun endGame() {
-        var winner: Player? = null
-
         ingameScheduler.stop()
 
-        if (players.size == 1) winner = players[0] else GameUtil.getClosestPlayerToLocation(auraWorldSpawn, players)
-        Bukkit.broadcastMessage(ConfigUtil.getMessage("win").replace("{player}", winner!!.name))
+        val winner: Player = if (players.size == 1) players[0] else GameUtil.getClosestPlayerToLocation(auraWorldSpawn, players)
+        Bukkit.broadcastMessage(ConfigUtil.getMessage("win").replace("{player}", winner.name))
         SQLUtil.incrementStat(winner.uniqueId, "won")
 
-        spectators.addAll(players)
-        spectators.forEach { it.teleport(lobbyWorldSpawn) }
-        postGameScheduler.start()
+        Bukkit.getOnlinePlayers().forEach { it.teleport(lobbyWorldSpawn) }
+        Bukkit.getOnlinePlayers().forEach { it.inventory.clear() }
 
+        postGameScheduler.start()
         gameState = GameState.POST_GAME
     }
 
@@ -110,7 +110,7 @@ class AuraClassic: JavaPlugin() {
         Bukkit.getServer().unloadWorld(auraWorld, true)
         Bukkit.getServer().unloadWorld(lobbyWorld, true)
         sqlConnection.disconnect()
-        // TODO restart server
+        Bukkit.getServer().shutdown()
     }
 
     companion object {
