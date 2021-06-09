@@ -1,5 +1,7 @@
 - ~~mySQL autoReconnect=true~~
 - ~~clear inventory after game~~
+- ~~start command~~
+- ~~set spawn points in config.yaml~~
 - fix spawn location in lobby post game
 - kill (and disable) animals in lobby map
 - fix aura map
