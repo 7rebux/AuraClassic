@@ -27,19 +27,19 @@ Usage | Description
 `/start`| Skips the pre game countdown
 `/stats (<name>)` | Shows the players statistics
 
-## Config
+## Configuration
 
 ### Custom Maps
 If you want to use your own lobby or ingame map please make sure you follow the steps below.
 
-1. Disable set the following game rules in your world to false:
+1. Set the following game rules in your world to false:
     - doDaylightCircle
     - doMobSpawning
     - doWeatherCircle
     - mobGriefing
 2. Rename your world folder to
     - *aura_map* for the ingame map
-    - *lobby* for the lobby
+    - *lobby* for the lobby map
 3. Set the spawn point inside the *config.yaml* file
 4. Drag the world into your server root folder
 
