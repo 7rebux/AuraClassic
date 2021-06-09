@@ -1,4 +1,4 @@
-package net.rebux.auraclassic.command
+package net.rebux.auraclassic.commands
 
 import net.rebux.auraclassic.AuraClassic
 import net.rebux.auraclassic.utils.ConfigUtil
