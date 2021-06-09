@@ -9,7 +9,7 @@ class SQLConnection {
     lateinit var connection: Connection
 
     fun connect(hostname: String, port: String, database: String, username: String, password: String) {
-        connection = DriverManager.getConnection("jdbc:mysql://$hostname:$port/$database", username, password)
+        connection = DriverManager.getConnection("jdbc:mysql://$hostname:$port/$database?autoReconnect=true", username, password)
     }
 
     fun disconnect() = connection.close()
