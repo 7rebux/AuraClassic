@@ -3,15 +3,8 @@ version: 1.0.0
 description: A simple Aura Classic plugin
 main: net.rebux.auraclassic.AuraClassic
 commands:
-  setspawn:
-    usage: /setspawn
-    permission: aura.setspawn
   start:
     usage: /start
     permission: aura.start
   stats:
     usage: /stats <player>
-  statsall:
-    usage: /statsall <player>
-  statsd:
-    usage: /statsd <days> <player>
