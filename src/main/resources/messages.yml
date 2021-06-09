@@ -4,10 +4,11 @@ quit: "&7<< &8{player} &7hat das Spiel verlassen"
 chat: "&8{player}&7: &f{message}"
 chat_spectator: "&7{player}: &f{message}" # TODO idk if this is right
 
-pre_game_timer: "&f[&aAuraClassic&f] &7Die Runde beginnt in &e{time} &7Sekunden" # TODO 1 sekunde
-ingame_end_timer: "&f[&aAuraClassic&f] &7Die Runde endet in &e{time} &7Sekunden" # TODO 1 sekunde
-protection_timer: "&f[&aAuraClassic&f] &7Die Schutzzeit endet in &e{time} &7Sekunden" # TODO 1 sekunde
-post_game_timer: "&f[&aAuraClassic&f] &cDer Server startet in &e{time} &cSekunden neu" # TODO 1 sekunde
+# TODO 1 second
+pre_game_timer: "&f[&aAuraClassic&f] &7Die Runde beginnt in &e{time} &7Sekunden"
+ingame_end_timer: "&f[&aAuraClassic&f] &7Die Runde endet in &e{time} &7Sekunden"
+protection_timer: "&f[&aAuraClassic&f] &7Die Schutzzeit endet in &e{time} &7Sekunden"
+post_game_timer: "&f[&aAuraClassic&f] &cDer Server startet in &e{time} &cSekunden neu"
 
 waiting: "&f[&aAuraClassic&f] &cWarten auf weitere Spieler"
 protection_start: "&f[&aAuraClassic&f] &eDie Schutzzeit beginnt!"
