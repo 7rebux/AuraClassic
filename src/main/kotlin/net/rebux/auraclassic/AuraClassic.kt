@@ -53,8 +53,8 @@ class AuraClassic: JavaPlugin() {
         // initialize locations
         lobbyWorld = Bukkit.createWorld(WorldCreator("lobby"))
         auraWorld = Bukkit.createWorld(WorldCreator("aura_map"))
-        lobbyWorldSpawn = Location(lobbyWorld, 216.5, 4.0, 442.5, 270F, 0F)
-        auraWorldSpawn = Location(auraWorld, 8.5, 64.5, -8.5, 90F, 0F)
+        lobbyWorldSpawn = ConfigUtil.getLocation("lobby_spawn_point", lobbyWorld)
+        auraWorldSpawn = ConfigUtil.getLocation("ingame_spawn_point", auraWorld)
         lobbyWorld.isAutoSave = false
         auraWorld.isAutoSave = false
 
@@ -83,8 +83,8 @@ class AuraClassic: JavaPlugin() {
         players.forEach { it.level = 0; it.exp = 0F }
         Bukkit.getScheduler().runTaskAsynchronously(this) { players.forEach { player -> ItemUtil.getItems(player.uniqueId).forEach { player.inventory.addItem(it) } } }
         players.forEach { it.inventory.armorContents = ItemUtil.getArmor() }
-        players.forEach { it.teleport(auraWorldSpawn) }
         players.forEach { it.bedSpawnLocation = auraWorldSpawn }
+        players.forEach { it.teleport(auraWorldSpawn) }
         players.forEach { SQLUtil.incrementStat(it.uniqueId, "played") }
         protectionScheduler.start()
         Bukkit.broadcastMessage(ConfigUtil.getMessage("protection_start"))
@@ -99,6 +99,7 @@ class AuraClassic: JavaPlugin() {
         Bukkit.broadcastMessage(ConfigUtil.getMessage("win").replace("{player}", winner.name))
         SQLUtil.incrementStat(winner.uniqueId, "won")
 
+        Bukkit.getOnlinePlayers().forEach { it.bedSpawnLocation = lobbyWorldSpawn }
         Bukkit.getOnlinePlayers().forEach { it.teleport(lobbyWorldSpawn) }
         Bukkit.getOnlinePlayers().forEach { it.inventory.clear() }
 
