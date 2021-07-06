@@ -5,3 +5,5 @@
 - fix spawn location in lobby post game
 - kill (and disable) animals in lobby map
 - fix aura map
+- spectator mode
+- spectator compass
