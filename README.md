@@ -1,4 +1,6 @@
-# Aura Classic Plugin
+<h1 align="center">WORK IN PROGRESS!</h1>
+
+## Aura Classic Plugin
 A minecraft plugin of the famous game mode **Aura Classic** made in pure [Kotlin](https://kotlinlang.org/) with the [Bukkit API](https://getbukkit.org/)
 
 ## Currently Supported Minecraft Versions
