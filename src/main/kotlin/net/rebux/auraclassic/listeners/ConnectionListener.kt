@@ -11,6 +11,8 @@ import org.bukkit.event.player.PlayerQuitEvent
 class ConnectionListener: Listener {
     @EventHandler
     fun onConnect(event: PlayerJoinEvent) {
+        event.player.inventory.clear()
+
         if (ac.instance.gameState == GameState.PRE_GAME) {
             event.joinMessage = ConfigUtil.getMessage("join").replace("{player}", event.player.name)
             event.player.inventory.setItem(8, ItemUtil.getInventorySortingItem())
