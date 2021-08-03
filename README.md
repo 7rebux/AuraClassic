@@ -79,18 +79,18 @@ WHERE id = 1;
 ### config.yml
 Entry | Data Type | Description
 --- | --- | ---
-*min_players* | Int | Sets the **minimum** amount of players to start a game
-*max_players* | Int | Sets the **maximum** amount of players (not spectators)
+*min_players* | Int | Sets the minimum amount of players to start a game
+*max_players* | Int | Sets the maximum amount of players (not spectators)
 *hostname* | String | The hostname of the MySQL server
 *port* | Int | The port of the MySQL server
 *database* | String | The name of the database of the MySQL server
 *username* | String | The username of the MySQL server user
 *password* | String | The password of the MySQL server user
-*waiting_delay* | Int | Sets the **delay** between **waiting for players** messages
+*waiting_delay* | Int | Sets the delay between waiting for players messages
 *pre_game_countdown* | Int | Sets the countdown until the game starts
 *protection_countdown* | Int | Sets the countdown until the protection phase ends
 *ingame_countdown* | Int | Sets the countdown until the game ends
-*tracker_countdown* | Int | Sets the countdown until the players get the **tracker** item
+*tracker_countdown* | Int | Sets the countdown until the players get the tracker item
 *post_game_countdown* | Int | Sets the countdown until the server restarts after the game
 *inventory_sorting_name* | String | Sets the display name for the inventory sorting item
 *inventory_sorting_name_inventory* | String | Sets the display name for the sorting inventory
