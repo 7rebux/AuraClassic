@@ -1,5 +1,6 @@
 package net.rebux.auraclassic.listeners
 
+import net.rebux.auraclassic.inventories.CompassInventory
 import net.rebux.auraclassic.inventories.SortingInventory
 import net.rebux.auraclassic.utils.*
 import org.bukkit.Bukkit
@@ -17,7 +18,6 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.player.*
 import org.bukkit.event.weather.WeatherChangeEvent
-import java.util.function.Predicate
 import java.util.stream.Collectors.toList
 import net.rebux.auraclassic.AuraClassic as ac
 
@@ -118,6 +118,8 @@ class MainListener: Listener {
     fun onRightClickItem(event: PlayerInteractEvent) {
         if (event.player.itemInHand?.itemMeta?.displayName == ConfigUtil.getString("inventory_sorting_name"))
             event.player.openInventory(SortingInventory(event.player).inventory)
+        else if (event.player.itemInHand?.itemMeta?.displayName == ConfigUtil.getString("tracker_name"))
+            event.player.openInventory(CompassInventory().getInventory())
     }
 
     @EventHandler
@@ -133,6 +135,10 @@ class MainListener: Listener {
                     if (event.rawSlot > 8)
                         event.isCancelled = true
                 }
+        } else if (event.inventory.name == ConfigUtil.getString("tracker_name_inventory")) {
+            if (event.currentItem.type == Material.SKULL_ITEM && event.action == InventoryAction.PICKUP_ALL)
+                event.whoClicked.teleport(Bukkit.getPlayer(event.currentItem.itemMeta.displayName).location)
+                    .also { event.whoClicked.closeInventory() }
         } else
             event.isCancelled = true
     }

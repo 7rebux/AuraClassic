@@ -2,7 +2,9 @@ package net.rebux.auraclassic.utils
 
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.SkullMeta
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -30,5 +32,17 @@ object ItemUtil {
         return ItemBuilder(Material.COMPASS)
             .setDisplayName(ConfigUtil.getString("tracker_name"))
             .toItemStack()
+    }
+
+    fun getSkullItem(owner: Player): ItemStack {
+        val skull = ItemStack(Material.SKULL_ITEM)
+        val skullMeta = skull.itemMeta as SkullMeta
+
+        skullMeta.displayName = owner.name
+        skullMeta.owner = owner.name
+
+        skull.itemMeta = skullMeta
+
+        return skull
     }
 }

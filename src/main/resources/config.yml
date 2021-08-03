@@ -4,7 +4,7 @@ max_players: 12
 
 # MySQL database settings
 hostname: "hostname"
-port: 0 # TODO standard port
+port: 0
 database: "database"
 username: "username"
 password: "password"
